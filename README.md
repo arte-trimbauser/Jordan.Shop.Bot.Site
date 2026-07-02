@@ -1,1 +1,1 @@
-# Jordan.Bot.Site
+# Jordan.Shop-Bot.Discord
