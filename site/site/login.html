@@ -158,8 +158,8 @@
 
     function loginDiscordAnimado() {
         sessionStorage.setItem('_mostrar_splash', '1');
-        // ✅ CORRIGIDO: redirect_uri para a Vercel
-        const urlAutorizacao = "https://discord.com/oauth2/authorize?client_id=1424479855466123284&response_type=code&redirect_uri=https%3A%2F%2Fjordan-shop-bot-site.vercel.app%2Fcallback&scope=identify+guilds+guilds.members.read";
+        // ✅ CORRIGIDO: redirect_uri para /api/callback na Vercel
+        const urlAutorizacao = "https://discord.com/oauth2/authorize?client_id=1424479855466123284&response_type=code&redirect_uri=https%3A%2F%2Fjordan-shop-bot-site.vercel.app%2Fapi%2Fcallback&scope=identify+guilds+guilds.members.read";
         window.location.href = urlAutorizacao;
     }
 
