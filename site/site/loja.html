@@ -9,7 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
     <style>
-        /* (mesmo estilo que já tens – não alterei) */
+        /* (mantém o mesmo estilo que já tens – não alterei) */
         :root {
             --primary-red: #8b0000;
             --overlay-dark: rgba(0, 0, 0, 0.85);
@@ -247,7 +247,6 @@
 
     <!-- ===== HEADER ===== -->
     <header>
-        <!-- Logo como botão (evita about:blank) -->
         <button onclick="location.reload()" class="logo-link">Jordan Shop | Staff</button>
         <div class="refresh-container">
             <button class="refresh-btn" onclick="atualizarPagina()" title="Atualizar página">
@@ -268,6 +267,8 @@
             <input type="text" id="search" class="search-box" placeholder="Procurar função..." onkeyup="filtrarMenu()">
             <div class="nav-links">
                 <button class="nav-btn active" onclick="showSection('welcome-section')">INÍCIO</button>
+                <!-- Se quiseres redirecionar para a página separada de transcripts, descomenta a linha abaixo e comenta a linha seguinte -->
+                <!-- <button class="nav-btn" onclick="window.location.href='transcripts.html'">TRANSCRIPTS</button> -->
                 <button class="nav-btn" onclick="showSection('transcripts-section')">TRANSCRIPTS</button>
                 <button class="nav-btn" onclick="showSection('vendas-section')">VENDAS</button>
                 <button class="nav-btn" onclick="showSection('embed-section')">CRIAR EMBED</button>
@@ -478,15 +479,12 @@
                 block.classList.remove('active');
                 document.querySelector('header').style.display = 'flex';
                 document.querySelector('.container').style.display = 'flex';
-                // Define o nome base
                 document.getElementById('nav-username').innerText = sessao;
-                // Chama a saudação dinâmica
                 atualizarSaudacao();
                 document.getElementById('main-welcome').innerText = "Bem-Vindo, " + sessao;
             }
         })();
 
-        // ===== SAUDAÇÃO DINÂMICA =====
         function atualizarSaudacao() {
             const nome = localStorage.getItem('staff_sessao') || 'Staff';
             const hora = new Date().getHours();
@@ -496,8 +494,6 @@
             else saudacao = 'Boa noite';
             document.getElementById('nav-username').innerText = `${saudacao}, ${nome}`;
         }
-
-        // Atualizar a cada minuto
         setInterval(atualizarSaudacao, 60000);
 
         // =============================================================
@@ -554,7 +550,7 @@
         atualizarRelogio();
 
         // =============================================================
-        // 3. DASHBOARD (MOCK) – pode ser substituído por dados reais
+        // 3. DASHBOARD (MOCK) – PODE SER SUBSTITUÍDO POR DADOS REAIS
         // =============================================================
         function gerarDadosDashboard() {
             const vendasHoje = Math.floor(Math.random() * 500) + 50;
@@ -707,7 +703,6 @@
             container.innerHTML = '';
             lista.forEach((file, index) => {
                 const nomeCompleto = file.name.replace('.html', '');
-                // Extrair produto do nome (ex: "ticket-shark_semanal-arte_10" → "shark_semanal")
                 let produto = 'Produto';
                 const partes = nomeCompleto.split('-');
                 if (partes.length >= 2) {
