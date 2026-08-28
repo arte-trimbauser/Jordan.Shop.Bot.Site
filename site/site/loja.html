@@ -182,6 +182,7 @@
             transform: scale(1.02); 
         }
 
+        /* MAIN: TUDO CENTRADO POR OMISSÃO */
         main { 
             flex:1; 
             display:flex; 
@@ -196,6 +197,7 @@
             margin-bottom: 20px; 
             font-weight:800; 
             text-shadow:2px 2px 8px rgba(0,0,0,0.8); 
+            text-align: center;
         }
 
         .card {
@@ -203,7 +205,7 @@
             padding: 30px; 
             border-radius: 15px; 
             border-left: 5px solid var(--primary-red);
-            text-align: left; 
+            text-align: center; 
             width: 100%; 
             max-width: 800px; 
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
@@ -251,6 +253,14 @@
             font-weight: bold;
         }
 
+        /* ===== SECÇÃO SITE ONLINE (ESQUERDA) ===== */
+        #bot-status-section {
+            width: 100%;
+            display: flex;
+            justify-content: flex-start;
+            text-align: left;
+        }
+
         .status-card { 
             background: rgba(20, 20, 20, 0.95); 
             padding: 30px; 
@@ -267,6 +277,13 @@
             border-radius: 10px; 
             margin-top: 20px; 
             border: 1px solid #444; 
+        }
+
+        /* ===== CRIAR EMBED (CENTRADOS) ===== */
+        #embed-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .embed-creator-card { 
@@ -380,6 +397,7 @@
             color: #ff9999; 
             font-size: 0.8rem; 
             margin: 15px 0;
+            text-align: center;
         }
 
         @keyframes pulse { 
@@ -538,6 +556,7 @@
             overflow-y: auto;
             box-shadow: 0 25px 50px rgba(0,0,0,0.8);
             animation: modalSlideIn 0.3s ease;
+            text-align: left;
         }
 
         @keyframes modalSlideIn {
@@ -785,7 +804,7 @@
         </aside>
 
         <main>
-            <div id="welcome-section" class="content-div" style="animation: fadeIn 0.5s ease;">
+            <div id="welcome-section" class="content-div" style="animation: fadeIn 0.5s ease; width:100%; display:flex; flex-direction:column; align-items:center;">
                 <h1 id="main-welcome">Bem-Vindo</h1>
                 <p style="font-size: 1.2rem; opacity: 0.8;">Bem-Vindo ao painel de Administração e Gestão da Jordan Shop</p>
             </div>
@@ -875,7 +894,8 @@
                 </div>
             </div>
 
-            <div id="bot-status-section" class="content-div" style="display:none; wi09dth:100%;">
+            <!-- SITE ONLINE ALINHADO À ESQUERDA -->
+            <div id="bot-status-section" class="content-div" style="display:none; width:100%;">
                 <div class="status-card">
                     <h2 style="margin: 0; color: #00ff00;">✅ Site está online!</h2>
                     <p>O sistema do bot e a API do site estão operacionais.</p>
@@ -917,7 +937,7 @@
                 <div class="form-group">
                     <label class="form-label-modal">💰 Preço</label>
                     <input type="text" class="form-input-modal" id="vendaPreco" 
-                           placeholder="Ex: €10.00 (dependendo do menu) (" required>
+                           placeholder="Ex: €10.00 (dependendo do menu)" required>
                 </div>
 
                 <div class="form-group">
@@ -986,7 +1006,12 @@
 
         function showSection(id) {
             document.querySelectorAll('.content-div').forEach(s => s.style.display = 'none');
-            document.getElementById(id).style.display = 'block';
+            const sec = document.getElementById(id);
+            if (id === 'bot-status-section') {
+                sec.style.display = 'flex';
+            } else {
+                sec.style.display = 'block';
+            }
 
             document.querySelectorAll('.nav-btn').forEach(btn => {
                 btn.classList.remove('active');
@@ -998,8 +1023,6 @@
 
         function atualizarPagina() {
             const btn = document.querySelector('.refresh-btn');
-            const icon = document.getElementById('refreshIcon');
-
             btn.classList.add('spinning');
             btn.disabled = true;
 
@@ -1103,29 +1126,23 @@
             }
         }
 
-        // ===== SISTEMA DE REGISTRO DE VENDAS =====
         const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1491444823251751083/Cdbu_D0JbeXbMXikLvm15Ij052NZsJL0FLoMTdpMcM6AiMzT_-pVWSkA91uFcp5DhL2x';
 
-        // Abrir modal
         function abrirModalVenda() {
-            console.log('Abrindo modal...');
             const modal = document.getElementById('modalVenda');
             if (modal) {
                 modal.classList.add('active');
                 document.body.style.overflow = 'hidden';
 
-                // Definir data atual
                 const hoje = new Date().toISOString().split('T')[0];
                 const dataInput = document.getElementById('vendaData');
                 if (dataInput) dataInput.value = hoje;
 
-                // Focar no primeiro campo
                 const compradorInput = document.getElementById('vendaComprador');
                 if (compradorInput) compradorInput.focus();
             }
         }
 
-        // Fechar modal
         function fecharModalVenda() {
             const modal = document.getElementById('modalVenda');
             if (modal) {
@@ -1136,7 +1153,6 @@
             if (form) form.reset();
         }
 
-        // Fechar ao clicar fora
         document.addEventListener('click', function(e) {
             const modal = document.getElementById('modalVenda');
             if (e.target === modal) {
@@ -1144,7 +1160,6 @@
             }
         });
 
-        // Tecla ESC para fechar
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 const modal = document.getElementById('modalVenda');
@@ -1154,7 +1169,6 @@
             }
         });
 
-        // Mostrar toast
         function mostrarToast(mensagem, tipo) {
             const toast = document.getElementById('toastVenda');
             const toastMsg = document.getElementById('toastMsg');
@@ -1170,21 +1184,17 @@
             setTimeout(() => toast.classList.remove('show'), 3000);
         }
 
-        // Formatar data para exibição
         function formatarData(dataStr) {
             const data = new Date(dataStr);
             return data.toLocaleDateString('pt-PT');
         }
 
-        // Registrar venda
         async function registrarVenda(event) {
             event.preventDefault();
-            console.log('Registrando venda...');
 
             const btn = document.getElementById('btnSubmitVenda');
             const originalText = btn.innerHTML;
 
-            // Loading state
             btn.disabled = true;
             btn.innerHTML = '<span class="spinner"></span> Registrando...';
 
@@ -1202,28 +1212,22 @@
             const enviarDiscord = document.getElementById('vendaEnviarDiscord').checked;
 
             try {
-                // Adicionar à lista local primeiro (sempre funciona)
                 adicionarVendaLista(vendaData);
 
-                // Tentar enviar para Discord se marcado
                 if (enviarDiscord) {
-                    console.log('Tentando enviar para Discord...');
                     try {
                         await enviarVendaDiscord(vendaData);
                         mostrarToast('Venda registrada e enviada ao Discord! ✅', 'success');
                     } catch (discordError) {
-                        console.warn('Erro ao enviar para Discord:', discordError);
                         mostrarToast('Venda registrada! ⚠️ Discord: ' + discordError.message, 'success');
                     }
                 } else {
                     mostrarToast('Venda registrada com sucesso! ✅', 'success');
                 }
 
-                // Fechar modal
                 fecharModalVenda();
 
             } catch (erro) {
-                console.error('Erro:', erro);
                 mostrarToast('Erro: ' + erro.message, 'error');
             } finally {
                 btn.disabled = false;
@@ -1231,7 +1235,6 @@
             }
         }
 
-        // Enviar venda para Discord via Webhook (com CORS handling)
         async function enviarVendaDiscord(venda) {
             const embed = {
                 title: '🛒 Nova Venda Registrada',
@@ -1253,38 +1256,26 @@
                 content: '🎉 Nova venda por **' + venda.registradoPor + '**!'
             };
 
-            // Tentar método 1: fetch com mode no-cors (envia mas não lê resposta)
             try {
-                console.log('Tentando fetch com no-cors...');
-                const response = await fetch(DISCORD_WEBHOOK_URL, {
+                await fetch(DISCORD_WEBHOOK_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload),
                     mode: 'no-cors'
                 });
-
-                // Com no-cors, a resposta é opaque (não podemos ler)
-                // Mas o request foi enviado!
-                console.log('Fetch enviado com no-cors (resposta opaque)');
-
-                // Esperar um pouco e assumir sucesso
                 await new Promise(resolve => setTimeout(resolve, 500));
                 return;
-
             } catch (e) {
-                console.warn('Fetch com no-cors falhou:', e);
+                console.warn('Fetch falhou:', e);
             }
 
-            // Tentar método 2: XMLHttpRequest
             return new Promise((resolve, reject) => {
-                console.log('Tentando XMLHttpRequest...');
                 const xhr = new XMLHttpRequest();
                 xhr.open('POST', DISCORD_WEBHOOK_URL, true);
                 xhr.setRequestHeader('Content-Type', 'application/json');
 
                 xhr.onload = function() {
                     if (xhr.status >= 200 && xhr.status < 300) {
-                        console.log('XHR sucesso!');
                         resolve();
                     } else {
                         reject(new Error('HTTP ' + xhr.status));
@@ -1296,12 +1287,10 @@
             });
         }
 
-        // Adicionar venda à lista visual
         function adicionarVendaLista(venda) {
             const container = document.getElementById('vendas-lista');
             if (!container) return;
 
-            // Determinar cor do badge
             let badgeStyle = 'background: #00ff00; color: #000;';
             const duracaoUpper = venda.duracao.toUpperCase();
             if (duracaoUpper.includes('SEMANAL')) badgeStyle = 'background: #ffcc00; color: #000;';
@@ -1320,7 +1309,6 @@
             container.insertBefore(div, container.firstChild);
         }
 
-        // Escape HTML
         function escapeHtml(texto) {
             if (!texto) return '';
             const div = document.createElement('div');
