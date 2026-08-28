@@ -1,3 +1,4 @@
+// api/transcripts/[id].js
 const { createClient } = require('@supabase/supabase-js');
 
 const supabase = createClient(
@@ -12,20 +13,10 @@ module.exports = async (req, res) => {
     console.log(`📄 A buscar transcript: ${id}`);
 
     try {
-        // Tenta com "transcripts/{id}.html"
-        let { data, error } = await supabase.storage
+        // 🔥 CORREÇÃO: buscar apenas na raiz da bucket
+        const { data, error } = await supabase.storage
             .from('transcripts')
-            .download(`transcripts/${id}.html`);
-
-        // Se falhar, tenta na raiz
-        if (error || !data) {
-            console.log(`⚠️ Caminho com pasta falhou, a tentar raiz...`);
-            const result = await supabase.storage
-                .from('transcripts')
-                .download(`${id}.html`);
-            data = result.data;
-            error = result.error;
-        }
+            .download(`${id}.html`);
 
         if (error || !data) {
             console.error(`❌ Transcript ${id} não encontrado:`, error?.message);
