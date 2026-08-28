@@ -1,0 +1,24 @@
+{
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/site/site/index.html"
+    },
+    {
+      "source": "/login.html",
+      "destination": "/site/site/login.html"
+    },
+    {
+      "source": "/loja.html",
+      "destination": "/site/site/loja.html"
+    },
+    {
+      "source": "/transcript.html",
+      "destination": "/site/site/transcript.html"
+    },
+    {
+      "source": "/transcripts.html",
+      "destination": "/site/site/transcripts.html"
+    }
+  ]
+}
