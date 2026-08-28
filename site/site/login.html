@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Jordan Shop - Login</title>
+    <link rel="icon" type="image/png" href="/logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; }
+        html, body { margin: 0; padding: 0; width: 100%; height: 100%; font-family: 'Open Sans', sans-serif; background: #000; overflow: hidden; }
+        .site-container { width: 100%; height: 100%; background: linear-gradient(rgba(0,0,0,.4),rgba(0,0,0,.4)), url('/login.jpg'); background-size: cover; background-position: center; display:flex; flex-direction:column; justify-content:center; align-items:center; position:relative; }
+        #error-message { position:absolute; top:20px; background:rgba(220,0,0,.9); color:#fff; padding:12px 25px; border-radius:10px; font-weight:bold; display:none; z-index:1000; box-shadow:0 4px 15px rgba(0,0,0,.5); border:1px solid #ff4444; }
+        .login-box { background:rgba(15,5,5,.92); padding:35px 20px; border-radius:20px; width:90%; max-width:340px; text-align:center; border:1px solid rgba(139,0,0,.3); box-shadow:0 15px 45px rgba(0,0,0,.8); }
+        .welcome-title { background:rgba(139,0,0,.8); padding:10px; border-radius:8px; margin-bottom:25px; font-weight:bold; font-size:.85rem; color:#fff; text-transform:uppercase; }
+        .input-group { background:rgba(255,255,255,.05); margin:15px 0; padding:12px; border-radius:8px; display:flex; align-items:center; border:1px solid rgba(255,255,255,.1); transition:.3s; }
+        .input-group:focus-within { border-color:#8b0000; background:rgba(255,255,255,.1); }
+        input { background:transparent; border:none; color:#fff; width:100%; outline:none; font-size:15px; }
+        input::placeholder { color:#888; }
+        .toggle-btn { width:24px; height:24px; cursor:pointer; margin-left:10px; object-fit:contain; }
+        .btn-entrar { width:100%; padding:15px; background:#8b0000; color:#fff; border:none; border-radius:8px; cursor:pointer; font-weight:800; margin-top:10px; transition:.3s; text-transform:uppercase; letter-spacing:1px; }
+        .btn-entrar:hover:not(:disabled) { background:#f00; box-shadow:0 0 20px rgba(255,0,0,.4); }
+        .btn-entrar:disabled { opacity:.65; cursor:not-allowed; }
+        .divider { color:#666; font-size:11px; margin:20px 0; font-weight:bold; }
+        .btn-discord { background:#fff; color:#5865F2; text-decoration:none; padding:14px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-weight:bold; transition:.3s; border:1px solid #5865F2; cursor:pointer; }
+        .btn-discord:hover { background:#f0f0f0; transform:translateY(-2px); }
+        .discord-logo { width:20px; height:20px; object-fit:contain; margin-right:12px; }
+    </style>
+</head>
+<body>
+    <div class="site-container">
+        <div id="error-message">Acesso Negado!</div>
+        <div class="login-box">
+            <div class="welcome-title">Login Jordan Shop Site</div>
+            <div class="input-group"><input type="text" id="user" placeholder="Nome do Utilizador" autocomplete="username"><span style="opacity:.6">👤</span></div>
+            <div class="input-group"><input type="password" id="pass" placeholder="Password" autocomplete="current-password"><img src="/olho_fechado.jpg" class="toggle-btn" id="eye-icon" alt="Mostrar password"></div>
+            <button class="btn-entrar" id="loginBtn" type="button">ENTRAR</button>
+            <div class="divider">OU</div>
+            <a href="#" id="discordLogin" class="btn-discord"><img src="/Discord-logo-icon.jpg" class="discord-logo" alt="Discord">Login Discord</a>
+        </div>
+    </div>
+<script>
+    const DISCORD_CLIENT_ID = '1424479855466123284';
+    const DISCORD_REDIRECT_URI = 'https://jordan-shop-bot-site.vercel.app/api/callback';
+
+    function mostrarErro(texto) {
+        const erro = document.getElementById('error-message');
+        erro.textContent = texto;
+        erro.style.display = 'block';
+        clearTimeout(window._erroTimer);
+        window._erroTimer = setTimeout(() => erro.style.display = 'none', 5000);
+    }
+
+    async function validarLogin() {
+        const u = document.getElementById('user').value.trim();
+        const p = document.getElementById('pass').value;
+        const btn = document.getElementById('loginBtn');
+        if (!u || !p) return mostrarErro('❌ Preenche todos os campos!');
+        btn.textContent = 'A VALIDAR...';
+        btn.disabled = true;
+        try {
+            const response = await fetch('/api/login-manual', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({username:u,password:p}) });
+            let data;
+            try { data = await response.json(); } catch { throw new Error('Resposta inválida da API'); }
+            if (!response.ok || !data.success) { mostrarErro('❌ Dados incorretos!'); btn.textContent='ENTRAR'; btn.disabled=false; return; }
+            localStorage.setItem('_mostrar_splash','1');
+            window.location.href = '/loja.html?user=' + encodeURIComponent(data.user || u) + '&token=' + encodeURIComponent(data.token || '');
+        } catch (err) {
+            console.error(err);
+            mostrarErro('❌ Erro ao ligar ao servidor!');
+            btn.textContent='ENTRAR'; btn.disabled=false;
+        }
+    }
+
+    function loginDiscord() {
+        localStorage.setItem('_mostrar_splash','1');
+        const params = new URLSearchParams({ client_id:DISCORD_CLIENT_ID, response_type:'code', redirect_uri:DISCORD_REDIRECT_URI, scope:'identify guilds guilds.members.read' });
+        window.location.href = 'https://discord.com/oauth2/authorize?' + params.toString();
+    }
+
+    function togglePass() {
+        const input = document.getElementById('pass');
+        const icon = document.getElementById('eye-icon');
+        const visible = input.type === 'password';
+        input.type = visible ? 'text' : 'password';
+        icon.src = visible ? '/olho_aberto.jpg' : '/olho_fechado.jpg';
+    }
+
+    document.getElementById('loginBtn').addEventListener('click', validarLogin);
+    document.getElementById('discordLogin').addEventListener('click', e => { e.preventDefault(); loginDiscord(); });
+    document.getElementById('eye-icon').addEventListener('click', togglePass);
+    document.addEventListener('keydown', e => { if (e.key === 'Enter') validarLogin(); });
+
+    window.addEventListener('load', () => {
+        const params = new URLSearchParams(window.location.search);
+        const error = params.get('error');
+        if (error === 'nao_autorizado') mostrarErro('❌ Não tens permissão de Staff no Discord.');
+        else if (error) mostrarErro('❌ Erro na autenticação do Discord.');
+    });
+</script>
+</body>
+</html>
