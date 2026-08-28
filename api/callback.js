@@ -29,17 +29,18 @@ module.exports = async (req, res) => {
 
     const userData = await userRes.json();
 
-    // Buscar membro na guild para obter o nickname
+    // Buscar nickname no servidor
     const GUILD_ID = '1393629457599828040';
-    const memberRes = await fetch(`https://discord.com/api/v10/guilds/${GUILD_ID}/members/${userData.id}`, {
-      headers: { Authorization: `Bearer ${tokenData.access_token}` }
-    });
-
     let displayName = userData.global_name || userData.username;
-    if (memberRes.ok) {
-      const memberData = await memberRes.json();
-      if (memberData.nick) displayName = memberData.nick;
-    }
+    try {
+      const memberRes = await fetch(`https://discord.com/api/v10/guilds/${GUILD_ID}/members/${userData.id}`, {
+        headers: { Authorization: `Bearer ${tokenData.access_token}` }
+      });
+      if (memberRes.ok) {
+        const memberData = await memberRes.json();
+        if (memberData.nick) displayName = memberData.nick;
+      }
+    } catch (e) { /* falha silenciosa */ }
 
     const staffAutorizado = {
       "924344854232834068": "Jordan Costa",
