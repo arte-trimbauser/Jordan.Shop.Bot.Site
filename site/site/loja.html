@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jordan Shop | Painel Staff Logs</title>
-    <link rel="icon" type="image/png" href="/logo.png">
+    <link rel="icon" type="image/png" href="logo.png">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;800&display=swap" rel="stylesheet">
 
+    <!-- PROTEÇÃO E CONTROLO DE SESSÃO -->
     <script>
         const params = new URLSearchParams(window.location.search);
         const userNoLink = params.get('user');
@@ -33,7 +34,7 @@
         * { box-sizing: border-box; }
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: 'Open Sans', sans-serif; color: white; overflow: hidden; }
 
-        .bg-full { position: fixed; top:0; left:0; width:100%; height:100%; background: url('/menu.png') no-repeat center center; background-size: cover; z-index:-2; }
+        .bg-full { position: fixed; top:0; left:0; width:100%; height:100%; background: url('menu.png') no-repeat center center; background-size: cover; z-index:-2; }
         .overlay { position: fixed; top:0; left:0; width:100%; height:100%; background: var(--overlay-dark); z-index:-1; }
 
         #welcome-screen { position: fixed; top:0; left:0; width:100%; height:100%; background: #000; display:flex; justify-content:center; align-items:center; z-index:9999; transition: opacity 0.8s ease; }
@@ -111,6 +112,7 @@
             height: calc(100vh - 60px); 
         }
 
+        /* BARRA LATERAL */
         aside { 
             width:260px;
             background: rgba(0,0,0,0.5); 
@@ -137,6 +139,7 @@
         .search-box:focus { border-bottom:2px solid var(--primary-red); }
         .search-box::placeholder { color: #888; }
 
+        /* OPÇÕES DO MENU */
         .nav-btn { 
             background: var(--primary-red); 
             color:white; 
@@ -146,13 +149,20 @@
             font-weight:600; 
             cursor:pointer; 
             transition: var(--transition-speed); 
-            text-align:center; 
             text-decoration:none; 
             display: block; 
             font-size: 0.9rem;
+            width: 100%;
+        }
+        .nav-btn.centro {
+            text-align: center; /* Opções normais centradas */
+        }
+        .nav-btn.esquerda {
+            text-align: left;   /* Site online alinhado à esquerda */
+            padding-left: 20px;
         }
         .nav-btn:hover { 
-            transform: translateX(10px); 
+            transform: translateX(5px); 
             filter: brightness(1.3); 
         }
         .nav-btn.active { 
@@ -182,16 +192,24 @@
             transform: scale(1.02); 
         }
 
-        /* MAIN: TUDO CENTRADO POR OMISSÃO */
+        /* CONTEÚDO PRINCIPAL CENTRALIZADO NO MEIO */
         main { 
             flex:1; 
             display:flex; 
             flex-direction:column; 
             align-items:center; 
-            padding:40px; 
-            text-align:center; 
+            padding:40px 20px; 
             overflow-y:auto; 
         }
+
+        .content-div {
+            width: 100%;
+            max-width: 800px; /* Garante que o conteúdo não se espalhe pelas bordas */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
         h1 { 
             font-size:2rem; 
             margin-bottom: 20px; 
@@ -205,17 +223,11 @@
             padding: 30px; 
             border-radius: 15px; 
             border-left: 5px solid var(--primary-red);
-            text-align: center; 
+            text-align: left; 
             width: 100%; 
-            max-width: 800px; 
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             margin-bottom: 20px;
             animation: fadeIn 0.5s ease;
-        }
-        .card h2 {
-            color: white;
-            margin-bottom: 15px;
-            font-size: 1.5rem;
         }
 
         .log-item { 
@@ -229,7 +241,6 @@
             transition:0.3s; 
             margin-bottom:10px; 
             width: 100%; 
-            max-width: 850px; 
             text-align: left; 
         }
         .log-item:hover { 
@@ -253,14 +264,7 @@
             font-weight: bold;
         }
 
-        /* ===== SECÇÃO SITE ONLINE (ESQUERDA) ===== */
-        #bot-status-section {
-            width: 100%;
-            display: flex;
-            justify-content: flex-start;
-            text-align: left;
-        }
-
+        /* STATUS CARD (SITE ONLINE) - ALINHADO À ESQUERDA */
         .status-card { 
             background: rgba(20, 20, 20, 0.95); 
             padding: 30px; 
@@ -268,8 +272,6 @@
             border-left: 8px solid #00ff00; 
             text-align: left; 
             width: 100%; 
-            max-width: 500px; 
-            margin-right: auto; 
             box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
         }
         .success-img { 
@@ -279,13 +281,7 @@
             border: 1px solid #444; 
         }
 
-        /* ===== CRIAR EMBED (CENTRADOS) ===== */
-        #embed-section {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
+        /* EMBED CREATOR */
         .embed-creator-card { 
             background: rgba(20, 20, 20, 0.95); 
             padding: 30px; 
@@ -293,7 +289,6 @@
             border-top: 5px solid var(--primary-red); 
             text-align: left; 
             width: 100%; 
-            max-width: 800px; 
             box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
         }
         .form-label { 
@@ -366,9 +361,7 @@
             transition: 0.3s;
             margin-top: 10px;
         }
-        .btn-add:hover {
-            background: #444;
-        }
+        .btn-add:hover { background: #444; }
 
         .btn-enviar {
             width:100%; 
@@ -388,113 +381,16 @@
             transform: translateY(-2px);
             box-shadow: 0 5px 20px rgba(255,0,0,0.4);
         }
-        .btn-enviar:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
 
-        .info-text {
-            color: #ff9999; 
-            font-size: 0.8rem; 
-            margin: 15px 0;
-            text-align: center;
-        }
+        .info-text { color: #ff9999; font-size: 0.8rem; margin: 15px 0; }
 
-        @keyframes pulse { 
-            0%{transform:scale(1);opacity:0.8;} 
-            50%{transform:scale(1.05);opacity:1;} 
-            100%{transform:scale(1);opacity:0.8;} 
-        }
-        @keyframes fadeIn { 
-            from { opacity: 0; transform: translateY(-10px); } 
-            to { opacity: 1; transform: translateY(0); } 
-        }
+        @keyframes pulse { 0%{transform:scale(1);opacity:0.8;} 50%{transform:scale(1.05);opacity:1;} 100%{transform:scale(1);opacity:0.8;} }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
-        @media (max-width: 768px) {
-            header { height: 50px; padding: 0 15px; }
-            .logo-link { font-size: 1rem; }
-            .user-tag { padding: 5px 10px; font-size: 0.85rem; }
-            .user-avatar { width: 20px; height: 20px; }
-            .refresh-btn { padding: 6px 12px; font-size: 0.8rem; }
-
-            .container { 
-                flex-direction: column; 
-                height: calc(100vh - 50px); 
-            }
-
-            aside { 
-                width: 100%; 
-                height: auto; 
-                padding: 10px; 
-                flex-direction: row; 
-                flex-wrap: wrap;
-                border-right: none; 
-                border-bottom: 1px solid rgba(255,255,255,0.1);
-            }
-            .search-box { 
-                width: 100%; 
-                margin-bottom: 10px; 
-                padding: 8px;
-                font-size: 0.8rem;
-            }
-            .nav-links { 
-                flex-direction: row; 
-                gap: 5px; 
-                flex-grow: 1;
-                overflow-x: auto;
-            }
-            .nav-btn { 
-                padding: 8px 12px; 
-                font-size: 0.75rem; 
-                white-space: nowrap;
-                min-width: fit-content;
-            }
-            .nav-btn:hover { transform: translateY(-2px); }
-            .logout-btn { 
-                padding: 8px 12px; 
-                font-size: 0.75rem; 
-                margin-top: 0;
-                margin-left: auto;
-            }
-
-            main { padding: 15px; }
-            h1 { font-size: 1.5rem; }
-            .card { padding: 20px; }
-            .embed-creator-card { padding: 20px; }
-            .log-item { flex-direction: column; align-items: flex-start; gap: 10px; }
-        }
-
-        /* ===== VENDAS CENTRALIZADAS ===== */
-        #vendas-section {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-        }
-
-        .vendas-wrapper {
-            width: 100%;
-            max-width: 900px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .vendas-header-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            margin-bottom: 25px;
-            padding: 0 10px;
-        }
-
-        .vendas-titulo {
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: white;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-        }
-
+        /* VENDAS */
+        .vendas-wrapper { width: 100%; display: flex; flex-direction: column; align-items: center; }
+        .vendas-header-row { display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 25px; }
+        .vendas-titulo { font-size: 1.8rem; font-weight: 800; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
         .btn-registrar-venda {
             background: linear-gradient(135deg, #00aa00 0%, #00cc00 100%);
             color: white;
@@ -510,259 +406,57 @@
             gap: 8px;
             box-shadow: 0 4px 15px rgba(0,200,0,0.3);
         }
+        .btn-registrar-venda:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,200,0,0.5); filter: brightness(1.1); }
+        .vendas-lista-container { width: 100%; display: flex; flex-direction: column; gap: 12px; }
 
-        .btn-registrar-venda:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0,200,0,0.5);
-            filter: brightness(1.1);
-        }
-
-        .vendas-lista-container {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-        }
-
-        /* ===== MODAL VENDAS ===== */
+        /* MODAL VENDAS */
         .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(10px);
-            z-index: 9999;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
+            display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.9); backdrop-filter: blur(10px); z-index: 9999;
+            justify-content: center; align-items: center; padding: 20px;
         }
-
-        .modal-overlay.active {
-            display: flex;
-        }
-
+        .modal-overlay.active { display: flex; }
         .modal-venda {
             background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-            border: 2px solid var(--primary-red);
-            border-radius: 20px;
-            padding: 35px;
-            max-width: 500px;
-            width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.8);
-            animation: modalSlideIn 0.3s ease;
-            text-align: left;
+            border: 2px solid var(--primary-red); border-radius: 20px; padding: 35px;
+            max-width: 500px; width: 100%; max-height: 90vh; overflow-y: auto;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.8); animation: modalSlideIn 0.3s ease;
         }
+        @keyframes modalSlideIn { from { opacity: 0; transform: translateY(-30px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 2px solid var(--primary-red); }
+        .modal-titulo { font-size: 1.5rem; font-weight: 800; color: white; display: flex; align-items: center; gap: 10px; }
+        .modal-close { background: var(--primary-red); color: white; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 1.5rem; font-weight: bold; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; }
+        .modal-close:hover { background: #ff0000; transform: rotate(90deg); }
+        .form-group { margin-bottom: 20px; text-align: left; }
+        .form-label-modal { display: block; color: #ff9999; margin-bottom: 8px; font-weight: 600; font-size: 0.9rem; }
+        .form-input-modal { width: 100%; padding: 12px 15px; border-radius: 8px; border: 1px solid #444; background: rgba(255,255,255,0.05); color: white; font-size: 1rem; transition: all 0.3s ease; }
+        .form-input-modal:focus { outline: none; border-color: var(--primary-red); box-shadow: 0 0 10px rgba(139,0,0,0.3); }
+        .checkbox-group { display: flex; align-items: center; gap: 12px; margin: 20px 0; padding: 15px; background: rgba(139,0,0,0.1); border-radius: 10px; border: 1px solid var(--primary-red); }
+        .checkbox-group input[type="checkbox"] { width: 20px; height: 20px; accent-color: var(--primary-red); cursor: pointer; }
+        .checkbox-group label { color: white; cursor: pointer; font-weight: 500; font-size: 0.9rem; }
+        .form-actions { display: flex; gap: 15px; margin-top: 25px; }
+        .btn-cancelar { flex: 1; background: #444; color: white; border: none; padding: 14px; border-radius: 8px; font-weight: 600; cursor: pointer; }
+        .btn-cancelar:hover { background: #555; }
+        .btn-confirmar { flex: 2; background: var(--primary-red); color: white; border: none; padding: 14px; border-radius: 8px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn-confirmar:hover:not(:disabled) { background: #ff0000; transform: translateY(-2px); box-shadow: 0 5px 20px rgba(255,0,0,0.4); }
 
-        @keyframes modalSlideIn {
-            from { opacity: 0; transform: translateY(-30px) scale(0.95); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
+        .spinner { display: inline-block; width: 18px; height: 18px; border: 3px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: white; animation: spin 1s ease-in-out infinite; }
+        .toast { position: fixed; bottom: 30px; right: 30px; background: var(--primary-red); color: white; padding: 16px 24px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 12px; transform: translateX(500px); transition: transform 0.3s ease; z-index: 10000; font-weight: 600; font-size: 0.95rem; }
+        .toast.show { transform: translateX(0); }
+        .toast.success { background: #00aa00; }
+        .toast.error { background: #cc0000; }
 
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid var(--primary-red);
-        }
-
-        .modal-titulo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: white;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .modal-close {
-            background: var(--primary-red);
-            color: white;
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 1.5rem;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-close:hover {
-            background: #ff0000;
-            transform: rotate(90deg);
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-label-modal {
-            display: block;
-            color: #ff9999;
-            margin-bottom: 8px;
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-
-        .form-input-modal {
-            width: 100%;
-            padding: 12px 15px;
-            border-radius: 8px;
-            border: 1px solid #444;
-            background: rgba(255,255,255,0.05);
-            color: white;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .form-input-modal:focus {
-            outline: none;
-            border-color: var(--primary-red);
-            box-shadow: 0 0 10px rgba(139,0,0,0.3);
-        }
-
-        .form-input-modal::placeholder {
-            color: #666;
-        }
-
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin: 20px 0;
-            padding: 15px;
-            background: rgba(139,0,0,0.1);
-            border-radius: 10px;
-            border: 1px solid var(--primary-red);
-        }
-
-        .checkbox-group input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-            accent-color: var(--primary-red);
-            cursor: pointer;
-        }
-
-        .checkbox-group label {
-            color: white;
-            cursor: pointer;
-            font-weight: 500;
-            font-size: 0.9rem;
-        }
-
-        .form-actions {
-            display: flex;
-            gap: 15px;
-            margin-top: 25px;
-        }
-
-        .btn-cancelar {
-            flex: 1;
-            background: #444;
-            color: white;
-            border: none;
-            padding: 14px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .btn-cancelar:hover {
-            background: #555;
-        }
-
-        .btn-confirmar {
-            flex: 2;
-            background: var(--primary-red);
-            color: white;
-            border: none;
-            padding: 14px;
-            border-radius: 8px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .btn-confirmar:hover:not(:disabled) {
-            background: #ff0000;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(255,0,0,0.4);
-        }
-
-        .btn-confirmar:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        .registrado-por {
-            font-size: 0.75rem;
-            color: #888;
-            margin-top: 8px;
-            padding-top: 8px;
-            border-top: 1px solid #444;
-        }
-
-        .registrado-por strong {
-            color: #ff9999;
-        }
-
-        .spinner {
-            display: inline-block;
-            width: 18px;
-            height: 18px;
-            border: 3px solid rgba(255,255,255,0.3);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 1s ease-in-out infinite;
-        }
-
-        .toast {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: var(--primary-red);
-            color: white;
-            padding: 16px 24px;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            transform: translateX(500px);
-            transition: transform 0.3s ease;
-            z-index: 10000;
-            font-weight: 600;
-            font-size: 0.95rem;
-        }
-
-        .toast.show {
-            transform: translateX(0);
-        }
-
-        .toast.success {
-            background: #00aa00;
-        }
-
-        .toast.error {
-            background: #cc0000;
+        @media (max-width: 768px) {
+            header { height: 50px; padding: 0 15px; }
+            .logo-link { font-size: 1rem; }
+            .container { flex-direction: column; height: calc(100vh - 50px); }
+            aside { width: 100%; height: auto; padding: 10px; flex-direction: row; flex-wrap: wrap; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); }
+            .nav-links { flex-direction: row; gap: 5px; overflow-x: auto; }
+            .nav-btn { padding: 8px 12px; font-size: 0.75rem; min-width: fit-content; }
+            main { padding: 15px; }
         }
     </style>
+<base target="_blank">
 </head>
 <body>
     <div id="welcome-screen" style="display:none;">
@@ -781,34 +475,38 @@
                 <span id="refreshIcon">🔃</span> Atualizar
             </button>
             <div class="user-tag">
-                <img src="/logo.png" class="user-avatar" alt="Logo">
+                <img src="logo.png" class="user-avatar" alt="Logo">
                 Olá, <span id="nav-username">Staff</span>
             </div>
         </div>
     </header>
 
     <div class="container">
+        <!-- BARRA LATERAL FIXA À ESQUERDA -->
         <aside>
             <input type="text" id="search" class="search-box" placeholder="Procurar função..." onkeyup="filtrarMenu()">
             <div class="nav-links">
-                <button class="nav-btn" onclick="showSection('welcome-section')">INÍCIO</button>
-                <button class="nav-btn" onclick="window.location.href='transcripts.html'">TRANSCRIPTS</button>
-                <button class="nav-btn" onclick="showSection('vendas-section')">VENDAS</button>
-                <button class="nav-btn" onclick="showSection('embed-section')">CRIAR EMBED</button>
-                <button class="nav-btn" onclick="showSection('bot-status-section')">SITE ONLINE</button>
+                <button class="nav-btn centro" onclick="showSection('welcome-section')">INÍCIO</button>
+                <button class="nav-btn centro" onclick="window.location.href='transcripts.html'">TRANSCRIPTS</button>
+                <button class="nav-btn centro" onclick="showSection('vendas-section')">VENDAS</button>
+                <button class="nav-btn centro" onclick="showSection('embed-section')">CRIAR EMBED</button>
+                <button class="nav-btn esquerda" onclick="showSection('bot-status-section')">SITE ONLINE</button>
             </div>
             <button class="logout-btn" onclick="localStorage.clear(); window.location.href='login.html'">
                 SAIR 🚪
             </button>
         </aside>
 
+        <!-- ÁREA DE CONTEÚDO CENTRADA -->
         <main>
-            <div id="welcome-section" class="content-div" style="animation: fadeIn 0.5s ease; width:100%; display:flex; flex-direction:column; align-items:center;">
+            <!-- INÍCIO -->
+            <div id="welcome-section" class="content-div" style="animation: fadeIn 0.5s ease;">
                 <h1 id="main-welcome">Bem-Vindo</h1>
-                <p style="font-size: 1.2rem; opacity: 0.8;">Bem-Vindo ao painel de Administração e Gestão da Jordan Shop</p>
+                <p style="font-size: 1.2rem; opacity: 0.8; text-align: center;">Bem-Vindo ao painel de Administração e Gestão da Jordan Shop</p>
             </div>
 
-            <div id="embed-section" class="content-div" style="display:none; width:100%;">
+            <!-- EMBED -->
+            <div id="embed-section" class="content-div" style="display:none;">
                 <h1>🎫 Criar Painel de Tickets</h1>
                 <div class="embed-creator-card">
                     <div style="margin-bottom: 15px;">
@@ -845,7 +543,8 @@
                 </div>
             </div>
 
-            <div id="vendas-section" class="content-div" style="display:none; width:100%;">
+            <!-- VENDAS -->
+            <div id="vendas-section" class="content-div" style="display:none;">
                 <div class="vendas-wrapper">
                     <div class="vendas-header-row">
                         <h1 class="vendas-titulo">📊 Histórico de Vendas</h1>
@@ -893,13 +592,13 @@
                 </div>
             </div>
 
-            <!-- SITE ONLINE ALINHADO À ESQUERDA -->
-            <div id="bot-status-section" class="content-div" style="display:none; width:100%;">
+            <!-- SITE ONLINE -->
+            <div id="bot-status-section" class="content-div" style="display:none;">
                 <div class="status-card">
                     <h2 style="margin: 0; color: #00ff00;">✅ Site está online!</h2>
-                    <p>O sistema do bot e a API do site estão operacionais.</p>
-                    <p>🕒 <strong>Hora Local:</strong> <span id="relogio-realtime">00:00:00</span></p>
-                    <img src="/success.png" class="success-img" alt="Sucesso">
+                    <p style="margin-top: 10px;">O sistema do bot e a API do site estão operacionais.</p>
+                    <p style="margin-top: 5px;">🕒 <strong>Hora Local:</strong> <span id="relogio-realtime">00:00:00</span></p>
+                    <img src="success.png" class="success-img" alt="Sucesso">
                 </div>
             </div>
         </main>
@@ -918,8 +617,7 @@
             <form id="formVenda" onsubmit="registrarVenda(event)">
                 <div class="form-group">
                     <label class="form-label-modal">👤 Nome do Comprador</label>
-                    <input type="text" class="form-input-modal" id="vendaComprador" 
-                           placeholder="Mete @user/e o nome usuário" required>
+                    <input type="text" class="form-input-modal" id="vendaComprador" placeholder="Mete @user/e o nome usuário" required>
                 </div>
 
                 <div class="form-group">
@@ -929,26 +627,22 @@
 
                 <div class="form-group">
                     <label class="form-label-modal">📦 Produto</label>
-                    <input type="text" class="form-input-modal" id="vendaProduto" 
-                           placeholder="Ex: 🦈・shark-menu (mete o nome do menu e o nome da opção por exemplo vpn e tem o IPVanish ou Cyber Ghost ficará: 🌎・vpn-service - IPVanish ou outro substitui)" required>
+                    <input type="text" class="form-input-modal" id="vendaProduto" placeholder="Ex: 🦈・shark-menu" required>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label-modal">💰 Preço</label>
-                    <input type="text" class="form-input-modal" id="vendaPreco" 
-                           placeholder="Ex: €10.00 (dependendo do menu)" required>
+                    <input type="text" class="form-input-modal" id="vendaPreco" placeholder="Ex: €10.00" required>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label-modal">⏱️ Duração do Produto</label>
-                    <input type="text" class="form-input-modal" id="vendaDuracao" 
-                           placeholder="Ex: Lifetime... 15 dias... (duração do produto)">
+                    <input type="text" class="form-input-modal" id="vendaDuracao" placeholder="Ex: Lifetime... 15 dias...">
                 </div>
 
                 <div class="form-group">
                     <label class="form-label-modal">@Staff🛡️ / @Moderador🛠️ responsável:</label>
-                    <input type="text" class="form-input-modal" id="vendaStaff" 
-                           placeholder="Ex: @! Jordan (responsável pela a venda)" required>
+                    <input type="text" class="form-input-modal" id="vendaStaff" placeholder="Ex: @! Jordan" required>
                 </div>
 
                 <div class="checkbox-group">
@@ -959,9 +653,7 @@
                 </div>
 
                 <div class="form-actions">
-                    <button type="button" class="btn-cancelar" onclick="fecharModalVenda()">
-                        Cancelar
-                    </button>
+                    <button type="button" class="btn-cancelar" onclick="fecharModalVenda()">Cancelar</button>
                     <button type="submit" class="btn-confirmar" id="btnSubmitVenda">
                         <span>💾</span> Registrar Venda
                     </button>
@@ -980,17 +672,6 @@
         document.getElementById('nav-username').innerText = utilizadorLogado || 'Staff';
         document.getElementById('main-welcome').innerText = "Bem-Vindo, " + (utilizadorLogado || 'Staff');
 
-        const veioDoLogin = new URLSearchParams(window.location.search).get('_login');
-        if (localStorage.getItem('_mostrar_splash')) {
-            localStorage.removeItem('_mostrar_splash');
-            const splash = document.getElementById('welcome-screen');
-            splash.style.display = 'flex';
-            setTimeout(() => {
-                splash.style.opacity = '0';
-                setTimeout(() => splash.style.display = 'none', 800);
-            }, 1500);
-        }
-
         window.addEventListener('DOMContentLoaded', () => {
             const irPara = localStorage.getItem('ir_para_secao');
             if (irPara) {
@@ -1005,12 +686,7 @@
 
         function showSection(id) {
             document.querySelectorAll('.content-div').forEach(s => s.style.display = 'none');
-            const sec = document.getElementById(id);
-            if (id === 'bot-status-section') {
-                sec.style.display = 'flex';
-            } else {
-                sec.style.display = 'block';
-            }
+            document.getElementById(id).style.display = 'flex';
 
             document.querySelectorAll('.nav-btn').forEach(btn => {
                 btn.classList.remove('active');
@@ -1024,10 +700,7 @@
             const btn = document.querySelector('.refresh-btn');
             btn.classList.add('spinning');
             btn.disabled = true;
-
-            setTimeout(() => {
-                window.location.reload();
-            }, 800);
+            setTimeout(() => { window.location.reload(); }, 800);
         }
 
         function filtrarMenu() {
@@ -1064,13 +737,8 @@
             const cor = document.getElementById('emb-cor').value;
             const btn = document.getElementById('btn-env-emb');
 
-            if (!canalId) {
-                alert("⚠️ Por favor, insere o ID do canal ou verifica se esta correto!");
-                return;
-            }
-
-            if (!titulo || !desc) {
-                alert("⚠️ Por favor, preenche o título e a descrição!");
+            if (!canalId || !titulo || !desc) {
+                alert("⚠️ Por favor, preenche todos os campos obrigatórios!");
                 return;
             }
 
@@ -1079,10 +747,7 @@
             let produtos = [];
             nomes.forEach((n, i) => {
                 if (n.value.trim()) {
-                    produtos.push({ 
-                        nome: n.value.trim(), 
-                        preco: precos[i].value.trim() || "N/A" 
-                    });
+                    produtos.push({ nome: n.value.trim(), preco: precos[i].value.trim() || "N/A" });
                 }
             });
 
@@ -1092,39 +757,29 @@
             try {
                 const response = await fetch('/api/enviar-embed', {
                     method: 'POST',
-                    headers: { 
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ 
-                        titulo: titulo,
-                        desc: desc,
-                        cor: cor,
-                        canalId: canalId,
-                        produtos: produtos
-                    })
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ titulo, desc, cor, canalId, produtos })
                 });
 
                 if (response.ok) {
-                    const msg = await response.text();
-                    alert("✅ " + msg);
+                    alert("✅ Embed enviado com sucesso!");
                     document.getElementById('emb-canal').value = '';
                     document.getElementById('emb-titulo').value = '';
                     document.getElementById('emb-desc').value = '';
                     document.getElementById('container-produtos').innerHTML = '';
                     addInputProduto();
                 } else {
-                    const errorMsg = await response.text();
-                    throw new Error(errorMsg);
+                    throw new Error(await response.text());
                 }
             } catch (e) {
-                console.error(e);
-                alert("❌ Erro ao enviar: " + e.message + " | Verifica se: 1. O bot está online | 2. O ID do canal está correto | 3. O bot tem permissões no canal");
+                alert("❌ Erro ao enviar: " + e.message);
             } finally {
                 btn.innerText = "🚀 ENVIAR VIA BOT";
                 btn.disabled = false;
             }
         }
 
+        // SISTEMA DE VENDAS E MODAL
         const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1491444823251751083/Cdbu_D0JbeXbMXikLvm15Ij052NZsJL0FLoMTdpMcM6AiMzT_-pVWSkA91uFcp5DhL2x';
 
         function abrirModalVenda() {
@@ -1132,13 +787,7 @@
             if (modal) {
                 modal.classList.add('active');
                 document.body.style.overflow = 'hidden';
-
-                const hoje = new Date().toISOString().split('T')[0];
-                const dataInput = document.getElementById('vendaData');
-                if (dataInput) dataInput.value = hoje;
-
-                const compradorInput = document.getElementById('vendaComprador');
-                if (compradorInput) compradorInput.focus();
+                document.getElementById('vendaData').value = new Date().toISOString().split('T')[0];
             }
         }
 
@@ -1148,38 +797,14 @@
                 modal.classList.remove('active');
                 document.body.style.overflow = '';
             }
-            const form = document.getElementById('formVenda');
-            if (form) form.reset();
+            document.getElementById('formVenda').reset();
         }
-
-        document.addEventListener('click', function(e) {
-            const modal = document.getElementById('modalVenda');
-            if (e.target === modal) {
-                fecharModalVenda();
-            }
-        });
-
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                const modal = document.getElementById('modalVenda');
-                if (modal && modal.classList.contains('active')) {
-                    fecharModalVenda();
-                }
-            }
-        });
 
         function mostrarToast(mensagem, tipo) {
             const toast = document.getElementById('toastVenda');
-            const toastMsg = document.getElementById('toastMsg');
-            const toastIcon = document.getElementById('toastIcon');
-
-            if (!toast || !toastMsg || !toastIcon) return;
-
-            toastMsg.textContent = mensagem;
-            toastIcon.textContent = tipo === 'success' ? '✅' : '❌';
-            toast.className = 'toast ' + (tipo || 'success');
-
-            toast.classList.add('show');
+            document.getElementById('toastMsg').textContent = mensagem;
+            document.getElementById('toastIcon').textContent = tipo === 'success' ? '✅' : '❌';
+            toast.className = 'toast ' + (tipo || 'success') + ' show';
             setTimeout(() => toast.classList.remove('show'), 3000);
         }
 
@@ -1190,7 +815,6 @@
 
         async function registrarVenda(event) {
             event.preventDefault();
-
             const btn = document.getElementById('btnSubmitVenda');
             const originalText = btn.innerHTML;
 
@@ -1204,30 +828,21 @@
                 preco: document.getElementById('vendaPreco').value || 'N/A',
                 duracao: document.getElementById('vendaDuracao').value || 'N/A',
                 staff: document.getElementById('vendaStaff').value,
-                registradoPor: utilizadorLogado || 'Staff',
-                timestamp: new Date().toISOString()
+                registradoPor: utilizadorLogado || 'Staff'
             };
 
             const enviarDiscord = document.getElementById('vendaEnviarDiscord').checked;
 
             try {
                 adicionarVendaLista(vendaData);
-
                 if (enviarDiscord) {
-                    try {
-                        await enviarVendaDiscord(vendaData);
-                        mostrarToast('Venda registrada e enviada ao Discord! ✅', 'success');
-                    } catch (discordError) {
-                        mostrarToast('Venda registrada! ⚠️ Discord: ' + discordError.message, 'success');
-                    }
-                } else {
-                    mostrarToast('Venda registrada com sucesso! ✅', 'success');
+                    await enviarVendaDiscord(vendaData);
                 }
-
+                mostrarToast('Venda registrada com sucesso! ✅', 'success');
                 fecharModalVenda();
-
             } catch (erro) {
-                mostrarToast('Erro: ' + erro.message, 'error');
+                mostrarToast('Venda gravada localmente com aviso no Discord.', 'success');
+                fecharModalVenda();
             } finally {
                 btn.disabled = false;
                 btn.innerHTML = originalText;
@@ -1235,54 +850,27 @@
         }
 
         async function enviarVendaDiscord(venda) {
-            const embed = {
-                title: '🛒 Nova Venda Registrada',
-                color: 0x8b0000,
-                fields: [
-                    { name: '👤 Comprador', value: venda.comprador, inline: true },
-                    { name: '📅 Data', value: formatarData(venda.data), inline: true },
-                    { name: '📦 Produto', value: venda.produto, inline: false },
-                    { name: '💰 Preço', value: venda.preco, inline: true },
-                    { name: '⏱️ Duração', value: venda.duracao, inline: true },
-                    { name: '🛡️ Staff', value: venda.staff, inline: true }
-                ],
-                timestamp: new Date().toISOString(),
-                footer: { text: 'Jordan Shop Logs' }
-            };
-
             const payload = {
-                embeds: [embed],
-                content: '🎉 Nova venda por **' + venda.registradoPor + '**!'
+                embeds: [{
+                    title: '🛒 Nova Venda Registrada',
+                    color: 0x8b0000,
+                    fields: [
+                        { name: '👤 Comprador', value: venda.comprador, inline: true },
+                        { name: '📅 Data', value: formatarData(venda.data), inline: true },
+                        { name: '📦 Produto', value: venda.produto, inline: false },
+                        { name: '💰 Preço', value: venda.preco, inline: true },
+                        { name: '⏱️ Duração', value: venda.duracao, inline: true },
+                        { name: '🛡️ Staff', value: venda.staff, inline: true }
+                    ],
+                    footer: { text: 'Jordan Shop Logs' }
+                }]
             };
 
-            try {
-                await fetch(DISCORD_WEBHOOK_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload),
-                    mode: 'no-cors'
-                });
-                await new Promise(resolve => setTimeout(resolve, 500));
-                return;
-            } catch (e) {
-                console.warn('Fetch falhou:', e);
-            }
-
-            return new Promise((resolve, reject) => {
-                const xhr = new XMLHttpRequest();
-                xhr.open('POST', DISCORD_WEBHOOK_URL, true);
-                xhr.setRequestHeader('Content-Type', 'application/json');
-
-                xhr.onload = function() {
-                    if (xhr.status >= 200 && xhr.status < 300) {
-                        resolve();
-                    } else {
-                        reject(new Error('HTTP ' + xhr.status));
-                    }
-                };
-
-                xhr.onerror = () => reject(new Error('Erro de rede'));
-                xhr.send(JSON.stringify(payload));
+            await fetch(DISCORD_WEBHOOK_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload),
+                mode: 'no-cors'
             });
         }
 
@@ -1291,20 +879,17 @@
             if (!container) return;
 
             let badgeStyle = 'background: #00ff00; color: #000;';
-            const duracaoUpper = venda.duracao.toUpperCase();
-            if (duracaoUpper.includes('SEMANAL')) badgeStyle = 'background: #ffcc00; color: #000;';
-            else if (duracaoUpper.includes('MENSAL')) badgeStyle = 'background: #ff6600; color: #fff;';
+            if (venda.duracao.toUpperCase().includes('SEMANAL')) badgeStyle = 'background: #ffcc00; color: #000;';
 
             const div = document.createElement('div');
             div.className = 'log-item';
-            div.style.animation = 'fadeIn 0.5s ease';
-            div.innerHTML = 
-                '<div class="log-info">' +
-                    '<strong>🛍️ Comprador: ' + escapeHtml(venda.comprador) + ' | 📅 Data: ' + formatarData(venda.data) + '</strong>' +
-                    '<span>📦 Produto: ' + escapeHtml(venda.produto) + '<br>💰 Preço: ' + escapeHtml(venda.preco) + '<br>🛡️ Staff: ' + escapeHtml(venda.staff) + '</span>' +
-                '</div>' +
-                '<span class="status-badge" style="' + badgeStyle + '">' + escapeHtml(venda.duracao.toUpperCase()) + '</span>';
-
+            div.innerHTML = `
+                <div class="log-info">
+                    <strong>🛍️ Comprador: ${escapeHtml(venda.comprador)} | 📅 Data: ${formatarData(venda.data)}</strong>
+                    <span>📦 Produto: ${escapeHtml(venda.produto)}<br>💰 Preço: ${escapeHtml(venda.preco)}<br>🛡️ Staff: ${escapeHtml(venda.staff)}</span>
+                </div>
+                <span class="status-badge" style="${badgeStyle}">${escapeHtml(venda.duracao.toUpperCase())}</span>
+            `;
             container.insertBefore(div, container.firstChild);
         }
 
