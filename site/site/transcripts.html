@@ -7,15 +7,22 @@ function renderTranscripts(lista) {
 
     container.innerHTML = '';
     lista.forEach((file, index) => {
+        // Nome do ficheiro sem .html
         const nomeCompleto = file.name.replace('.html', '');
-        // Extrair o produto: ex: "ticket-shark_semanal-arte_10" → "shark_semanal"
-        let produto = 'Produto';
+        
+        // Extrair produto e cliente do nome
+        // Ex: "ticket-shark_semanal-arte_10" → produto="shark_semanal", cliente="arte_10"
         const partes = nomeCompleto.split('-');
+        let produto = 'Produto';
+        let cliente = 'CLIENTE';
+        
         if (partes.length >= 2) {
-            // Pode ser "ticket-shark_semanal-arte_10" → "shark_semanal"
+            // O produto são as partes do meio (ex: "shark_semanal")
             produto = partes.slice(1, partes.length - 1).join(' ') || 'Produto';
+            // O cliente é a última parte
+            cliente = partes[partes.length - 1]?.toUpperCase() || 'CLIENTE';
         }
-        const cliente = partes[partes.length - 1]?.toUpperCase() || 'CLIENTE';
+        
         const data = file.created_at ? new Date(file.created_at).toLocaleString('pt-PT') : 'Data desconhecida';
         const id = `transcript-${index}`;
 
