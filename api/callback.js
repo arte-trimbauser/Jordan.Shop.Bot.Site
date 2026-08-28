@@ -1,10 +1,7 @@
 // api/callback.js
 module.exports = async (req, res) => {
   const { code } = req.query;
-
-  if (!code) {
-    return res.redirect('/login.html?error=no_code');
-  }
+  if (!code) return res.redirect('/login.html?error=no_code');
 
   try {
     const params = new URLSearchParams({
@@ -21,20 +18,29 @@ module.exports = async (req, res) => {
       body: params
     });
 
-    if (!tokenRes.ok) {
-      return res.redirect('/login.html?error=auth_failed');
-    }
+    if (!tokenRes.ok) return res.redirect('/login.html?error=auth_failed');
 
     const tokenData = await tokenRes.json();
     const userRes = await fetch('https://discord.com/api/users/@me', {
       headers: { Authorization: `Bearer ${tokenData.access_token}` }
     });
 
-    if (!userRes.ok) {
-      return res.redirect('/login.html?error=auth_failed');
-    }
+    if (!userRes.ok) return res.redirect('/login.html?error=auth_failed');
 
     const userData = await userRes.json();
+
+    // Buscar membro na guild para obter o nickname
+    const GUILD_ID = '1393629457599828040';
+    const memberRes = await fetch(`https://discord.com/api/v10/guilds/${GUILD_ID}/members/${userData.id}`, {
+      headers: { Authorization: `Bearer ${tokenData.access_token}` }
+    });
+
+    let displayName = userData.global_name || userData.username;
+    if (memberRes.ok) {
+      const memberData = await memberRes.json();
+      if (memberData.nick) displayName = memberData.nick;
+    }
+
     const staffAutorizado = {
       "924344854232834068": "Jordan Costa",
       "996454465555136675": "Arteex26",
@@ -47,11 +53,8 @@ module.exports = async (req, res) => {
       return res.redirect('/login.html?error=nao_autorizado');
     }
 
-    // ✅ Usar o nome de exibição (global_name) ou username como fallback
-    const nomeExibicao = userData.global_name || userData.username;
-
     const tokenSessao = Math.random().toString(36).substring(2);
-    return res.redirect(`/loja.html?user=${encodeURIComponent(nomeExibicao)}&token=${tokenSessao}`);
+    return res.redirect(`/loja.html?user=${encodeURIComponent(displayName)}&token=${tokenSessao}`);
   } catch (error) {
     console.error('Callback error:', error);
     return res.redirect('/login.html?error=auth_failed');
