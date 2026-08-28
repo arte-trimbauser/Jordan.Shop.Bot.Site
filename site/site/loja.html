@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jordan Shop | Painel Staff Logs</title>
-    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="icon" type="image/png" href="/logo.png">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;800&display=swap" rel="stylesheet">
 
     <script>
@@ -33,7 +33,7 @@
         * { box-sizing: border-box; }
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: 'Open Sans', sans-serif; color: white; overflow: hidden; }
 
-        .bg-full { position: fixed; top:0; left:0; width:100%; height:100%; background: url('menu.png') no-repeat center center; background-size: cover; z-index:-2; }
+        .bg-full { position: fixed; top:0; left:0; width:100%; height:100%; background: url('/menu.png') no-repeat center center; background-size: cover; z-index:-2; }
         .overlay { position: fixed; top:0; left:0; width:100%; height:100%; background: var(--overlay-dark); z-index:-1; }
 
         #welcome-screen { position: fixed; top:0; left:0; width:100%; height:100%; background: #000; display:flex; justify-content:center; align-items:center; z-index:9999; transition: opacity 0.8s ease; }
@@ -763,7 +763,6 @@
             background: #cc0000;
         }
     </style>
-<base target="_blank">
 </head>
 <body>
     <div id="welcome-screen" style="display:none;">
@@ -782,7 +781,7 @@
                 <span id="refreshIcon">🔃</span> Atualizar
             </button>
             <div class="user-tag">
-                <img src="logo.png" class="user-avatar" alt="Logo">
+                <img src="/logo.png" class="user-avatar" alt="Logo">
                 Olá, <span id="nav-username">Staff</span>
             </div>
         </div>
@@ -900,7 +899,7 @@
                     <h2 style="margin: 0; color: #00ff00;">✅ Site está online!</h2>
                     <p>O sistema do bot e a API do site estão operacionais.</p>
                     <p>🕒 <strong>Hora Local:</strong> <span id="relogio-realtime">00:00:00</span></p>
-                    <img src="success.png" class="success-img" alt="Sucesso">
+                    <img src="/success.png" class="success-img" alt="Sucesso">
                 </div>
             </div>
         </main>
