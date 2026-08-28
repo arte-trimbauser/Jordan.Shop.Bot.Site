@@ -47,8 +47,11 @@ module.exports = async (req, res) => {
       return res.redirect('/login.html?error=nao_autorizado');
     }
 
+    // ✅ Usar o nome de exibição (global_name) ou username como fallback
+    const nomeExibicao = userData.global_name || userData.username;
+
     const tokenSessao = Math.random().toString(36).substring(2);
-    return res.redirect(`/loja.html?user=${encodeURIComponent(userData.username)}&token=${tokenSessao}`);
+    return res.redirect(`/loja.html?user=${encodeURIComponent(nomeExibicao)}&token=${tokenSessao}`);
   } catch (error) {
     console.error('Callback error:', error);
     return res.redirect('/login.html?error=auth_failed');
