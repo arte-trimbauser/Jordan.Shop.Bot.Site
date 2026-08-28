@@ -7,14 +7,14 @@ const supabase = createClient(
 
 module.exports = async (req, res) => {
     try {
-        // Buscar vendas dos últimos 7 dias (agrupadas por dia)
+        // Buscar vendas dos últimos 7 dias
         const hoje = new Date();
         const seteDiasAtras = new Date();
         seteDiasAtras.setDate(hoje.getDate() - 7);
 
-        const { data, error } = await supabase
+        const { data: vendas, error } = await supabase
             .from('vendas')
-            .select('data, preco')
+            .select('*')
             .gte('data', seteDiasAtras.toISOString())
             .order('data', { ascending: true });
 
@@ -23,19 +23,32 @@ module.exports = async (req, res) => {
             return res.status(500).json({ error: error.message });
         }
 
-        // Processar para o formato do gráfico
+        // Processar dados para o gráfico
         const dias = [];
         const valores = [];
+        const hojeStr = hoje.toISOString().split('T')[0];
+        let totalHoje = 0;
+        let countHoje = 0;
+
         for (let i = 6; i >= 0; i--) {
             const d = new Date();
             d.setDate(d.getDate() - i);
             const diaStr = d.toISOString().split('T')[0];
             dias.push(diaStr);
-            const total = data.filter(v => v.data.startsWith(diaStr)).reduce((acc, v) => acc + parseFloat(v.preco), 0);
+            const total = vendas.filter(v => v.data.startsWith(diaStr)).reduce((acc, v) => acc + parseFloat(v.preco), 0);
             valores.push(total);
+            if (diaStr === hojeStr) {
+                totalHoje = total;
+                countHoje = vendas.filter(v => v.data.startsWith(diaStr)).length;
+            }
         }
 
-        res.json({ dias, valores });
+        res.json({
+            dias,
+            valores,
+            totalHoje,
+            countHoje
+        });
     } catch (err) {
         console.error('Erro:', err);
         res.status(500).json({ error: 'Erro interno' });
