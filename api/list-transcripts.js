@@ -1,14 +1,24 @@
-// Lista de transcripts para a área Staff.
-// A fonte dos transcripts pode ser ligada aqui mais tarde sem alterar o frontend.
+const { createClient } = require('@supabase/supabase-js');
+
+const supabase = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_KEY
+);
+
 module.exports = async (req, res) => {
-  res.setHeader('Content-Type', 'application/json; charset=utf-8');
-  res.setHeader('Cache-Control', 'no-store');
+    try {
+        const { data, error } = await supabase.storage
+            .from('transcripts')
+            .list('transcripts', { sortBy: { column: 'created_at', order: 'desc' } });
 
-  if (req.method !== 'GET') {
-    return res.status(405).json({ error: 'Method Not Allowed' });
-  }
+        if (error) {
+            console.error('Erro ao listar transcripts:', error);
+            return res.status(500).json({ error: error.message });
+        }
 
-  // Não existem transcripts armazenados neste repositório neste momento.
-  // Devolver [] evita que o frontend trate a ausência da fonte como erro de API.
-  return res.status(200).json([]);
+        res.json(data || []);
+    } catch (err) {
+        console.error('Erro:', err);
+        res.status(500).json({ error: 'Erro interno' });
+    }
 };
