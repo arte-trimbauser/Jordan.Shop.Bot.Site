@@ -7,25 +7,29 @@ const supabase = createClient(
 
 module.exports = async (req, res) => {
     const { id } = req.query;
-    if (!id) {
-        return res.status(400).send('ID do transcript não fornecido.');
-    }
+    if (!id) return res.status(400).send('ID do transcript não fornecido.');
 
-    console.log(`📄 Pedido de transcript: ${id}`);
+    console.log(`📄 A buscar transcript: ${id}`);
 
     try {
-        const { data, error } = await supabase.storage
+        // Tenta com "transcripts/{id}.html"
+        let { data, error } = await supabase.storage
             .from('transcripts')
             .download(`transcripts/${id}.html`);
 
-        if (error) {
-            console.error(`❌ Erro ao baixar transcript ${id}:`, error.message);
-            return res.status(404).send('Transcript não encontrado.');
+        // Se falhar, tenta na raiz
+        if (error || !data) {
+            console.log(`⚠️ Caminho com pasta falhou, a tentar raiz...`);
+            const result = await supabase.storage
+                .from('transcripts')
+                .download(`${id}.html`);
+            data = result.data;
+            error = result.error;
         }
 
-        if (!data) {
-            console.warn(`⚠️ Transcript ${id} não tem dados.`);
-            return res.status(404).send('Transcript vazio.');
+        if (error || !data) {
+            console.error(`❌ Transcript ${id} não encontrado:`, error?.message);
+            return res.status(404).send('Transcript não encontrado.');
         }
 
         const text = await data.text();
