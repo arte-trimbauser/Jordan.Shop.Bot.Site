@@ -10,14 +10,16 @@ module.exports = async (req, res) => {
     const { id } = req.query;
     if (!id) return res.status(400).send('ID do transcript não fornecido.');
 
-    console.log(`📄 A buscar transcript: ${id}`);
+    // Remove extensão se vier com .html
+    const cleanId = id.replace(/\.html$/, '');
+    console.log(`📄 A buscar transcript: ${cleanId}`);
 
-    // Lista de caminhos possíveis (ordem de tentativa)
+    // Caminhos possíveis (raiz e com /transcripts/)
     const paths = [
-        `${id}.html`,                     // raiz da bucket
-        `transcripts/${id}.html`,         // dentro da pasta "transcripts"
-        `transcripts/${id}`,              // sem extensão (alguns podem estar assim)
-        `${id}`,                          // sem extensão
+        `${cleanId}.html`,
+        `transcripts/${cleanId}.html`,
+        `${cleanId}`,
+        `transcripts/${cleanId}`
     ];
 
     let data = null;
@@ -32,13 +34,11 @@ module.exports = async (req, res) => {
             data = fileData;
             usedPath = path;
             break;
-        } else {
-            console.warn(`⚠️ Falha em "${path}":`, error?.message || 'erro desconhecido');
         }
     }
 
     if (!data) {
-        console.error(`❌ Transcript ${id} não encontrado em nenhum caminho.`);
+        console.error(`❌ Transcript ${cleanId} não encontrado em nenhum caminho.`);
         return res.status(404).send('Transcript não encontrado.');
     }
 
