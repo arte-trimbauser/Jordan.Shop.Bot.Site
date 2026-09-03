@@ -5,6 +5,11 @@
     { "source": "/loja.html", "destination": "/site/site/loja.html" },
     { "source": "/transcript.html", "destination": "/site/site/transcript.html" },
     { "source": "/transcripts.html", "destination": "/site/site/transcripts.html" },
+
+    // 👇 NOVO: redireciona /transcripts/qualquer-coisa para a API
+    { "source": "/transcripts/:path*", "destination": "/api/transcripts/:path*" },
+
+    // Assets
     { "source": "/logo.png", "destination": "/site/site/logo.png" },
     { "source": "/menu.png", "destination": "/site/site/menu.png" },
     { "source": "/login.jpg", "destination": "/site/site/login.jpg" },
