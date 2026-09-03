@@ -1,19 +1,19 @@
 {
   "rewrites": [
-    { "source": "/", "destination": "/site/site/index.html" },
-    { "source": "/login.html", "destination": "/site/site/login.html" },
-    { "source": "/loja.html", "destination": "/site/site/loja.html" },
-    { "source": "/transcript.html", "destination": "/site/site/transcript.html" },
-    { "source": "/transcripts.html", "destination": "/site/site/transcripts.html" },
+    { "source": "/", "destination": "/site/index.html" },
+    { "source": "/login.html", "destination": "/site/login.html" },
+    { "source": "/loja.html", "destination": "/site/loja.html" },
+    { "source": "/transcript.html", "destination": "/site/transcript.html" },
+    { "source": "/transcripts.html", "destination": "/site/transcripts.html" },
 
     { "source": "/transcripts/:path*", "destination": "/api/transcripts/:path*" },
 
-    { "source": "/logo.png", "destination": "/site/site/logo.png" },
-    { "source": "/menu.png", "destination": "/site/site/menu.png" },
-    { "source": "/login.jpg", "destination": "/site/site/login.jpg" },
-    { "source": "/Discord-logo-icon.jpg", "destination": "/site/site/Discord-logo-icon.jpg" },
-    { "source": "/olho_aberto.jpg", "destination": "/site/site/olho_aberto.jpg" },
-    { "source": "/olho_fechado.jpg", "destination": "/site/site/olho_fechado.jpg" },
-    { "source": "/success.png", "destination": "/site/site/success.png" }
+    { "source": "/logo.png", "destination": "/site/logo.png" },
+    { "source": "/menu.png", "destination": "/site/menu.png" },
+    { "source": "/login.jpg", "destination": "/site/login.jpg" },
+    { "source": "/Discord-logo-icon.jpg", "destination": "/site/Discord-logo-icon.jpg" },
+    { "source": "/olho_aberto.jpg", "destination": "/site/olho_aberto.jpg" },
+    { "source": "/olho_fechado.jpg", "destination": "/site/olho_fechado.jpg" },
+    { "source": "/success.png", "destination": "/site/success.png" }
   ]
 }
