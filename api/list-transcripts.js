@@ -1,3 +1,4 @@
+// api/list-transcripts.js
 const { createClient } = require('@supabase/supabase-js');
 
 const supabase = createClient(
@@ -7,9 +8,10 @@ const supabase = createClient(
 
 module.exports = async (req, res) => {
     try {
+        // Lista a raiz da bucket (não a pasta 'transcripts')
         const { data, error } = await supabase.storage
             .from('transcripts')
-            .list('transcripts', { sortBy: { column: 'created_at', order: 'desc' } });
+            .list('', { sortBy: { column: 'created_at', order: 'desc' } });
 
         if (error) {
             console.error('Erro ao listar transcripts:', error);
